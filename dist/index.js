@@ -41,8 +41,20 @@ async function run() {
         }
         if (event.comment.body.trim() !== '/duplicate')
             return;
-        // TODO: duplicate
-        core.info('duplicate!');
+        const token = core.getInput('github-token');
+        const octokit = github.getOctokit(token);
+        // https://docs.github.com/en/rest/issues/issues#create-an-issue
+        const res = await octokit.rest.issues.create({
+            owner: event.repository.owner.login,
+            repo: event.repository.name,
+            title: event.issue.title,
+            body: event.issue.body ?? undefined,
+            milestone: event.issue.milestone?.number,
+            labels: event.issue.labels,
+            assignees: event.issue.assignees.map(({ login }) => login)
+        });
+        core.info('res:');
+        core.info(JSON.stringify(res, null, 2));
     }
     catch (error) {
         if (error instanceof Error)
