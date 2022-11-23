@@ -1,5 +1,7 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
+// eslint-disable-next-line import/no-unresolved
+import {IssueCommentEvent} from '@octokit/webhooks-types'
 
 async function run(): Promise<void> {
   try {
@@ -7,8 +9,8 @@ async function run(): Promise<void> {
       throw new Error('This action must be used with `issue_comment` event.')
     }
 
-    const payload = github.context.payload
-    if (payload.action !== 'created') {
+    const event = github.context.payload as IssueCommentEvent
+    if (event.action !== 'created') {
       throw new Error('This action must be used with `created` activity type.')
     }
 
