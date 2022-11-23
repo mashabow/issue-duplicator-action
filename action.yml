@@ -5,7 +5,7 @@ author: Masaya Nakamura (@mashabow)
 inputs:
   github-token:
     required: true
-    description: A GitHub personal access token with write access to the project
+    description: A GitHub personal access token with write access to the repo and the project
 
 runs:
   using: node16
