@@ -2,6 +2,11 @@ name: Issue Duplicator
 description: Duplicate an issue
 author: Masaya Nakamura (@mashabow)
 
+inputs:
+  github-token:
+    required: true
+    description: A GitHub personal access token with write access to the project
+
 runs:
   using: node16
   main: dist/index.js
