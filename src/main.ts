@@ -1,16 +1,26 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import * as github from '@actions/github'
+// eslint-disable-next-line import/no-unresolved
+import {IssueCommentEvent} from '@octokit/webhooks-types'
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+    core.debug('github.context:')
+    core.debug(JSON.stringify(github.context, null, 2))
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    if (github.context.eventName !== 'issue_comment') {
+      throw new Error('This action must be used with `issue_comment` event.')
+    }
 
-    core.setOutput('time', new Date().toTimeString())
+    const event = github.context.payload as IssueCommentEvent
+    if (event.action !== 'created') {
+      throw new Error('This action must be used with `created` activity type.')
+    }
+
+    if (event.comment.body.trim() !== '/duplicate') return
+
+    // TODO: duplicate
+    core.info('duplicate!')
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
