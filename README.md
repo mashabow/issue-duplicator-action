@@ -14,7 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: mashabow/issue-duplicator-action@v1
+        with:
+          github-token: ${{ secrets.REPO_PROJECT_PAT }}
 ```
+
+### Input
+
+- `github-token` **(required)** is a [personal access
+  token](https://github.com/settings/tokens/new) with `repo` and `project` scopes.
 
 ## Development
 
