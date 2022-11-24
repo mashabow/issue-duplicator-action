@@ -32,6 +32,8 @@
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.13.12",
+    "@graphql-codegen/typescript": "2.8.2",
+    "@graphql-codegen/typescript-operations": "^2.5.7",
     "@octokit/webhooks-types": "^6.7.0",
     "@types/node": "^18.11.0",
     "@typescript-eslint/parser": "^4.33.0",
@@ -43,7 +45,6 @@
     "js-yaml": "^4.1.0",
     "prettier": "2.5.1",
     "ts-jest": "^27.1.2",
-    "typescript": "^4.4.4",
-    "@graphql-codegen/typescript": "2.8.2"
+    "typescript": "^4.4.4"
   }
 }
