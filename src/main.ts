@@ -24,7 +24,7 @@ async function run(): Promise<void> {
     const octokit = github.getOctokit(token)
 
     // https://docs.github.com/en/rest/issues/issues#create-an-issue
-    const res = await octokit.rest.issues.create({
+    const {data: createdIssue} = await octokit.rest.issues.create({
       owner: event.repository.owner.login,
       repo: event.repository.name,
       title: event.issue.title,
@@ -34,9 +34,9 @@ async function run(): Promise<void> {
       assignees: event.issue.assignees.map(({login}) => login)
     })
 
-    core.info(`Issue created: ${res.data.url}`)
-    core.debug('res:')
-    core.debug(JSON.stringify(res, null, 2))
+    core.info(`Issue created: ${createdIssue.url}`)
+    core.debug('createdIssue:')
+    core.debug(JSON.stringify(createdIssue, null, 2))
 
     const graphqlClient = getSdk(octokit.graphql)
     const data = await graphqlClient.projectFieldValues({
@@ -53,27 +53,35 @@ async function run(): Promise<void> {
       )
       .map(({project, fieldValues}) => ({
         projectId: project.id,
-        fields: fieldValues.nodes
-          ?.map(node => {
-            if (!(node && 'field' in node)) return null
-            const value = (() => {
-              if ('date' in node) return node.date
-              if ('iterationId' in node) return node.iterationId
-              if ('number' in node) return node.number
-              if ('optionId' in node) return node.optionId
-              if ('text' in node && node.field.dataType === 'TEXT')
-                return node.text
-            })()
-            if (value === null || value === undefined) return null
-            return {fieldId: node.field.id, value}
-          })
-          .filter((field): field is {fieldId: string; value: string | number} =>
-            Boolean(field)
-          )
+        fields:
+          fieldValues.nodes
+            ?.map(node => {
+              if (!(node && 'field' in node)) return null
+              const value = (() => {
+                if ('date' in node) return node.date
+                if ('iterationId' in node) return node.iterationId
+                if ('number' in node) return node.number
+                if ('optionId' in node) return node.optionId
+                if ('text' in node && node.field.dataType === 'TEXT')
+                  return node.text
+              })()
+              if (value === null || value === undefined) return null
+              return {fieldId: node.field.id, value}
+            })
+            .filter(
+              (field): field is {fieldId: string; value: string | number} =>
+                Boolean(field)
+            ) ?? []
       }))
 
-    core.info('projects:')
-    core.info(JSON.stringify(projects, null, 2))
+    for (const {projectId, fields} of projects) {
+      const res = await graphqlClient.addIssueToProject({
+        input: {projectId, contentId: createdIssue.node_id}
+      })
+      const itemId = res.addProjectV2ItemById?.item?.id
+      if (!itemId) throw new Error('Missing itemId.')
+      core.info(`itemId: ${itemId}`)
+    }
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
