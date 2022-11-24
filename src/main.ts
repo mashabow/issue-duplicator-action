@@ -41,9 +41,38 @@ async function run(): Promise<void> {
     const data = await graphqlClient.projectFieldValues({
       issueNodeId: event.issue.node_id
     })
+    if (!(data.node && 'projectItems' in data.node)) {
+      throw new Error('Missing `projectItems` for the original issue.')
+    }
 
-    core.info('data:')
-    core.info(JSON.stringify(data, null, 2))
+    const items = data.node.projectItems.nodes ?? []
+    const projects = items
+      .filter((item): item is NonNullable<typeof items[number]> =>
+        Boolean(item)
+      )
+      .map(({project, fieldValues}) => ({
+        projectId: project.id,
+        fields: fieldValues.nodes
+          ?.map(node => {
+            if (!(node && 'field' in node)) return null
+            const value = (() => {
+              if ('date' in node) return node.date
+              if ('iterationId' in node) return node.iterationId
+              if ('number' in node) return node.number
+              if ('optionId' in node) return node.optionId
+              if ('text' in node && node.field.dataType === 'TEXT')
+                return node.text
+            })()
+            if (value === null || value === undefined) return null
+            return {fieldId: node.field.id, value}
+          })
+          .filter((field): field is {fieldId: string; value: string | number} =>
+            Boolean(field)
+          )
+      }))
+
+    core.info('projects:')
+    core.info(JSON.stringify(projects, null, 2))
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
