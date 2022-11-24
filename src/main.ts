@@ -34,11 +34,16 @@ async function run(): Promise<void> {
       assignees: event.issue.assignees.map(({login}) => login)
     })
 
-    const graphqlClient = getSdk(octokit.graphql)
-    const obj = await graphqlClient.foobar()
-
     core.info('res:')
     core.info(JSON.stringify(res, null, 2))
+
+    const graphqlClient = getSdk(octokit.graphql)
+    const data = await graphqlClient.projectFieldValues({
+      issueNodeId: event.issue.node_id
+    })
+
+    core.info('data:')
+    core.info(JSON.stringify(data, null, 2))
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
