@@ -1,0 +1,40 @@
+query projectFieldValues($issueNodeId: ID!) {
+  node(id: $issueNodeId) {
+    ... on Issue {
+      projectItems(first: 10, includeArchived: false) {
+        nodes {
+          project {
+            id
+          }
+          fieldValues(first: 100) {
+            nodes {
+              ... on ProjectV2ItemFieldValueCommon {
+                field {
+                  ... on ProjectV2FieldCommon {
+                    id
+                    dataType
+                  }
+                }
+              }
+              ... on ProjectV2ItemFieldDateValue {
+                date
+              }
+              ... on ProjectV2ItemFieldIterationValue {
+                iterationId
+              }
+              ... on ProjectV2ItemFieldNumberValue {
+                number
+              }
+              ... on ProjectV2ItemFieldSingleSelectValue {
+                optionId
+              }
+              ... on ProjectV2ItemFieldTextValue {
+                text
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
