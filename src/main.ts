@@ -2,6 +2,7 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 // eslint-disable-next-line import/no-unresolved
 import {IssueCommentEvent} from '@octokit/webhooks-types'
+import {getSdk} from './graphql'
 
 async function run(): Promise<void> {
   try {
@@ -32,6 +33,9 @@ async function run(): Promise<void> {
       labels: event.issue.labels,
       assignees: event.issue.assignees.map(({login}) => login)
     })
+
+    const graphqlClient = getSdk(octokit.graphql)
+    const obj = await graphqlClient.foobar()
 
     core.info('res:')
     core.info(JSON.stringify(res, null, 2))
