@@ -34,8 +34,9 @@ async function run(): Promise<void> {
       assignees: event.issue.assignees.map(({login}) => login)
     })
 
-    core.info('res:')
-    core.info(JSON.stringify(res, null, 2))
+    core.info(`Issue created: ${res.data.url}`)
+    core.debug('res:')
+    core.debug(JSON.stringify(res, null, 2))
 
     const graphqlClient = getSdk(octokit.graphql)
     const data = await graphqlClient.projectFieldValues({
