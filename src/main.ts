@@ -57,22 +57,28 @@ async function run(): Promise<void> {
           fieldValues.nodes
             ?.map(node => {
               if (!(node && 'field' in node)) return null
-              const value: ProjectV2FieldValue | undefined = (() => {
-                if ('date' in node) return {date: node.date}
-                if ('iterationId' in node)
-                  return {iterationId: node.iterationId}
-                if ('number' in node) return {number: node.number}
-                if ('optionId' in node)
-                  return {singleSelectOptionId: node.optionId}
-                if ('text' in node && node.field.dataType === 'TEXT')
-                  return {text: node.text}
-              })()
-              if (value === null || value === undefined) return null
-              return {fieldId: node.field.id, value}
+              return {
+                fieldId: node.field.id,
+                value: ((): ProjectV2FieldValue | undefined => {
+                  switch (node.__typename) {
+                    case 'ProjectV2ItemFieldDateValue':
+                      return {date: node.date}
+                    case 'ProjectV2ItemFieldIterationValue':
+                      return {iterationId: node.iterationId}
+                    case 'ProjectV2ItemFieldNumberValue':
+                      return {number: node.number}
+                    case 'ProjectV2ItemFieldSingleSelectValue':
+                      return {singleSelectOptionId: node.optionId}
+                    case 'ProjectV2ItemFieldTextValue':
+                      if (node.field.dataType === 'TEXT')
+                        return {text: node.text}
+                  }
+                })()
+              }
             })
             .filter(
               (field): field is {fieldId: string; value: ProjectV2FieldValue} =>
-                Boolean(field)
+                Boolean(field?.value)
             ) ?? []
       }))
 

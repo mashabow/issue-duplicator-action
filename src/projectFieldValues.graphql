@@ -8,6 +8,7 @@ query projectFieldValues($issueNodeId: ID!) {
           }
           fieldValues(first: 100) {
             nodes {
+              __typename
               ... on ProjectV2ItemFieldValueCommon {
                 field {
                   ... on ProjectV2FieldCommon {
