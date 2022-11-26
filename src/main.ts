@@ -52,8 +52,7 @@ async function run(): Promise<void> {
         Boolean(item)
       )
       .map(({project, fieldValues}) => ({
-        projectId: project.id,
-        projectUrl: project.url,
+        ...project,
         fields: (fieldValues.nodes ?? [])
           .map(node => {
             if (!(node && 'field' in node)) return null
@@ -87,18 +86,23 @@ async function run(): Promise<void> {
           )
       }))
 
-    for (const {projectId, projectUrl, fields} of projects) {
+    for (const project of projects) {
       const res = await graphqlClient.addIssueToProject({
-        input: {projectId, contentId: createdIssue.node_id}
+        input: {projectId: project.id, contentId: createdIssue.node_id}
       })
-      core.info(`Added issue to project: ${projectUrl}`)
+      core.info(`Added issue to project: ${project.url}`)
       const itemId = res.addProjectV2ItemById?.item?.id
       if (!itemId) throw new Error('Missing itemId.')
       core.debug(`itemId: ${itemId}`)
 
-      for (const field of fields) {
+      for (const field of project.fields) {
         await graphqlClient.setProjectFieldValue({
-          input: {projectId, itemId, fieldId: field.id, value: field.value}
+          input: {
+            projectId: project.id,
+            itemId,
+            fieldId: field.id,
+            value: field.value
+          }
         })
         core.info(`- Set field value: ${field.name}`)
       }
