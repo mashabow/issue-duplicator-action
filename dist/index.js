@@ -10,7 +10,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.IssueClosedStateReason = exports.IpAllowListForInstalledAppsEnabledSettingValue = exports.IpAllowListEntryOrderField = exports.IpAllowListEnabledSettingValue = exports.IdentityProviderConfigurationState = exports.GitSignatureState = exports.GistPrivacy = exports.GistOrderField = exports.FundingPlatform = exports.FileViewedState = exports.EnterpriseUserDeployment = exports.EnterpriseUserAccountMembershipRole = exports.EnterpriseServerUserAccountsUploadSyncState = exports.EnterpriseServerUserAccountsUploadOrderField = exports.EnterpriseServerUserAccountOrderField = exports.EnterpriseServerUserAccountEmailOrderField = exports.EnterpriseServerInstallationOrderField = exports.EnterpriseMembersCanMakePurchasesSettingValue = exports.EnterpriseMembersCanCreateRepositoriesSettingValue = exports.EnterpriseMemberOrderField = exports.EnterpriseEnabledSettingValue = exports.EnterpriseEnabledDisabledSettingValue = exports.EnterpriseDefaultRepositoryPermissionSettingValue = exports.EnterpriseAllowPrivateRepositoryForkingPolicyValue = exports.EnterpriseAdministratorRole = exports.EnterpriseAdministratorInvitationOrderField = exports.DismissReason = exports.DiscussionPollOptionOrderField = exports.DiscussionOrderField = exports.DiffSide = exports.DeploymentStatusState = exports.DeploymentState = exports.DeploymentReviewState = exports.DeploymentProtectionRuleType = exports.DeploymentOrderField = exports.DependencyGraphEcosystem = exports.DefaultRepositoryPermissionField = exports.ContributionLevel = exports.ComparisonStatus = exports.CommitContributionOrderField = exports.CommentCannotUpdateReason = exports.CommentAuthorAssociation = exports.CollaboratorAffiliation = exports.CheckStatusState = exports.CheckRunType = exports.CheckRunState = exports.CheckConclusionState = exports.CheckAnnotationLevel = exports.AuditLogOrderField = exports.ActorType = void 0;
 exports.ProjectNextFieldType = exports.ProjectItemType = exports.ProjectColumnPurpose = exports.ProjectCardState = exports.ProjectCardArchivedState = exports.PinnedDiscussionPattern = exports.PinnedDiscussionGradient = exports.PinnableItemType = exports.PatchStatus = exports.PackageVersionOrderField = exports.PackageType = exports.PackageOrderField = exports.PackageFileOrderField = exports.OrganizationOrderField = exports.OrganizationMembersCanCreateRepositoriesSettingValue = exports.OrganizationMemberRole = exports.OrganizationInvitationType = exports.OrganizationInvitationRole = exports.OrgUpdateMemberRepositoryCreationPermissionAuditEntryVisibility = exports.OrgUpdateMemberAuditEntryPermission = exports.OrgUpdateDefaultRepositoryPermissionAuditEntryPermission = exports.OrgRemoveOutsideCollaboratorAuditEntryReason = exports.OrgRemoveOutsideCollaboratorAuditEntryMembershipType = exports.OrgRemoveMemberAuditEntryReason = exports.OrgRemoveMemberAuditEntryMembershipType = exports.OrgRemoveBillingManagerAuditEntryReason = exports.OrgEnterpriseOwnerOrderField = exports.OrgCreateAuditEntryBillingPlan = exports.OrgAddMemberAuditEntryPermission = exports.OrderDirection = exports.OperationType = exports.OauthApplicationCreateAuditEntryState = exports.OidcProviderType = exports.NotificationRestrictionSettingValue = exports.MilestoneState = exports.MilestoneOrderField = exports.MigrationState = exports.MigrationSourceType = exports.MergeableState = exports.MergeStateStatus = exports.MergeCommitTitle = exports.MergeCommitMessage = exports.LockReason = exports.LanguageOrderField = exports.LabelOrderField = exports.IssueTimelineItemsItemType = exports.IssueStateReason = exports.IssueState = exports.IssueOrderField = exports.IssueCommentOrderField = void 0;
 exports.RepositoryVulnerabilityAlertState = exports.RepositoryVulnerabilityAlertDependencyScope = exports.RepositoryVisibility = exports.RepositoryPrivacy = exports.RepositoryPermission = exports.RepositoryOrderField = exports.RepositoryMigrationOrderField = exports.RepositoryMigrationOrderDirection = exports.RepositoryLockReason = exports.RepositoryInvitationOrderField = exports.RepositoryInteractionLimitOrigin = exports.RepositoryInteractionLimitExpiry = exports.RepositoryInteractionLimit = exports.RepositoryContributionType = exports.RepositoryAffiliation = exports.ReportedContentClassifiers = exports.RepoRemoveMemberAuditEntryVisibility = exports.RepoDestroyAuditEntryVisibility = exports.RepoCreateAuditEntryVisibility = exports.RepoChangeMergeSettingAuditEntryMergeType = exports.RepoArchivedAuditEntryVisibility = exports.RepoAddMemberAuditEntryVisibility = exports.RepoAccessAuditEntryVisibility = exports.ReleaseOrderField = exports.RefOrderField = exports.ReactionOrderField = exports.ReactionContent = exports.PullRequestUpdateState = exports.PullRequestTimelineItemsItemType = exports.PullRequestState = exports.PullRequestReviewState = exports.PullRequestReviewEvent = exports.PullRequestReviewDecision = exports.PullRequestReviewCommentState = exports.PullRequestOrderField = exports.PullRequestMergeMethod = exports.ProjectViewLayout = exports.ProjectV2ViewOrderField = exports.ProjectV2ViewLayout = exports.ProjectV2State = exports.ProjectV2OrderField = exports.ProjectV2ItemType = exports.ProjectV2ItemOrderField = exports.ProjectV2ItemFieldValueOrderField = exports.ProjectV2FieldType = exports.ProjectV2FieldOrderField = exports.ProjectTemplate = exports.ProjectState = exports.ProjectOrderField = exports.ProjectNextOrderField = void 0;
-exports.getSdk = exports.ProjectFieldValuesDocument = exports.WorkflowRunOrderField = exports.VerifiableDomainOrderField = exports.UserStatusOrderField = exports.UserBlockDuration = exports.TrackedIssueStates = exports.TopicSuggestionDeclineReason = exports.TeamRole = exports.TeamReviewAssignmentAlgorithm = exports.TeamRepositoryOrderField = exports.TeamPrivacy = exports.TeamOrderField = exports.TeamMembershipType = exports.TeamMemberRole = exports.TeamMemberOrderField = exports.TeamDiscussionOrderField = exports.TeamDiscussionCommentOrderField = exports.SubscriptionState = exports.StatusState = exports.StarOrderField = exports.SquashMergeCommitTitle = exports.SquashMergeCommitMessage = exports.SponsorshipPrivacy = exports.SponsorshipOrderField = exports.SponsorshipNewsletterOrderField = exports.SponsorsTierOrderField = exports.SponsorsListingFeaturedItemFeatureableType = exports.SponsorsGoalKind = exports.SponsorsActivityPeriod = exports.SponsorsActivityOrderField = exports.SponsorsActivityAction = exports.SponsorableOrderField = exports.SponsorOrderField = exports.SecurityVulnerabilityOrderField = exports.SecurityAdvisorySeverity = exports.SecurityAdvisoryOrderField = exports.SecurityAdvisoryIdentifierType = exports.SecurityAdvisoryEcosystem = exports.SecurityAdvisoryClassification = exports.SearchType = exports.SavedReplyOrderField = exports.SamlSignatureAlgorithm = exports.SamlDigestAlgorithm = exports.RoleInOrganization = exports.RequestableCheckStatusState = void 0;
+exports.getSdk = exports.SetProjectFieldValueDocument = exports.ProjectFieldValuesDocument = exports.AddIssueToProjectDocument = exports.WorkflowRunOrderField = exports.VerifiableDomainOrderField = exports.UserStatusOrderField = exports.UserBlockDuration = exports.TrackedIssueStates = exports.TopicSuggestionDeclineReason = exports.TeamRole = exports.TeamReviewAssignmentAlgorithm = exports.TeamRepositoryOrderField = exports.TeamPrivacy = exports.TeamOrderField = exports.TeamMembershipType = exports.TeamMemberRole = exports.TeamMemberOrderField = exports.TeamDiscussionOrderField = exports.TeamDiscussionCommentOrderField = exports.SubscriptionState = exports.StatusState = exports.StarOrderField = exports.SquashMergeCommitTitle = exports.SquashMergeCommitMessage = exports.SponsorshipPrivacy = exports.SponsorshipOrderField = exports.SponsorshipNewsletterOrderField = exports.SponsorsTierOrderField = exports.SponsorsListingFeaturedItemFeatureableType = exports.SponsorsGoalKind = exports.SponsorsActivityPeriod = exports.SponsorsActivityOrderField = exports.SponsorsActivityAction = exports.SponsorableOrderField = exports.SponsorOrderField = exports.SecurityVulnerabilityOrderField = exports.SecurityAdvisorySeverity = exports.SecurityAdvisoryOrderField = exports.SecurityAdvisoryIdentifierType = exports.SecurityAdvisoryEcosystem = exports.SecurityAdvisoryClassification = exports.SearchType = exports.SavedReplyOrderField = exports.SamlSignatureAlgorithm = exports.SamlDigestAlgorithm = exports.RoleInOrganization = exports.RequestableCheckStatusState = void 0;
 /** The actor's type. */
 var ActorType;
 (function (ActorType) {
@@ -2379,6 +2379,15 @@ var WorkflowRunOrderField;
     /** Order workflow runs by most recently created */
     WorkflowRunOrderField["CreatedAt"] = "CREATED_AT";
 })(WorkflowRunOrderField = exports.WorkflowRunOrderField || (exports.WorkflowRunOrderField = {}));
+exports.AddIssueToProjectDocument = `
+    mutation addIssueToProject($input: AddProjectV2ItemByIdInput!) {
+  addProjectV2ItemById(input: $input) {
+    item {
+      id
+    }
+  }
+}
+    `;
 exports.ProjectFieldValuesDocument = `
     query projectFieldValues($issueNodeId: ID!) {
   node(id: $issueNodeId) {
@@ -2387,13 +2396,16 @@ exports.ProjectFieldValuesDocument = `
         nodes {
           project {
             id
+            url
           }
           fieldValues(first: 100) {
             nodes {
+              __typename
               ... on ProjectV2ItemFieldValueCommon {
                 field {
                   ... on ProjectV2FieldCommon {
                     id
+                    name
                     dataType
                   }
                 }
@@ -2421,10 +2433,23 @@ exports.ProjectFieldValuesDocument = `
   }
 }
     `;
+exports.SetProjectFieldValueDocument = `
+    mutation setProjectFieldValue($input: UpdateProjectV2ItemFieldValueInput!) {
+  updateProjectV2ItemFieldValue(input: $input) {
+    clientMutationId
+  }
+}
+    `;
 function getSdk(requester) {
     return {
+        addIssueToProject(variables, options) {
+            return requester(exports.AddIssueToProjectDocument, variables, options);
+        },
         projectFieldValues(variables, options) {
             return requester(exports.ProjectFieldValuesDocument, variables, options);
+        },
+        setProjectFieldValue(variables, options) {
+            return requester(exports.SetProjectFieldValueDocument, variables, options);
         }
     };
 }
@@ -2477,7 +2502,7 @@ async function run() {
         const token = core.getInput('github-token');
         const octokit = github.getOctokit(token);
         // https://docs.github.com/en/rest/issues/issues#create-an-issue
-        const res = await octokit.rest.issues.create({
+        const { data: createdIssue } = await octokit.rest.issues.create({
             owner: event.repository.owner.login,
             repo: event.repository.name,
             title: event.issue.title,
@@ -2486,9 +2511,9 @@ async function run() {
             labels: event.issue.labels,
             assignees: event.issue.assignees.map(({ login }) => login)
         });
-        core.info(`Issue created: ${res.data.url}`);
-        core.debug('res:');
-        core.debug(JSON.stringify(res, null, 2));
+        core.info(`Issue created: ${createdIssue.url}`);
+        core.debug('createdIssue:');
+        core.debug(JSON.stringify(createdIssue, null, 2));
         const graphqlClient = (0, graphql_1.getSdk)(octokit.graphql);
         const data = await graphqlClient.projectFieldValues({
             issueNodeId: event.issue.node_id
@@ -2500,31 +2525,55 @@ async function run() {
         const projects = items
             .filter((item) => Boolean(item))
             .map(({ project, fieldValues }) => ({
-            projectId: project.id,
-            fields: fieldValues.nodes
-                ?.map(node => {
+            ...project,
+            fields: (fieldValues.nodes ?? [])
+                .map(node => {
                 if (!(node && 'field' in node))
                     return null;
-                const value = (() => {
-                    if ('date' in node)
-                        return node.date;
-                    if ('iterationId' in node)
-                        return node.iterationId;
-                    if ('number' in node)
-                        return node.number;
-                    if ('optionId' in node)
-                        return node.optionId;
-                    if ('text' in node && node.field.dataType === 'TEXT')
-                        return node.text;
-                })();
-                if (value === null || value === undefined)
-                    return null;
-                return { fieldId: node.field.id, value };
+                return {
+                    id: node.field.id,
+                    name: node.field.name,
+                    value: (() => {
+                        switch (node.__typename) {
+                            case 'ProjectV2ItemFieldDateValue':
+                                return { date: node.date };
+                            case 'ProjectV2ItemFieldIterationValue':
+                                return { iterationId: node.iterationId };
+                            case 'ProjectV2ItemFieldNumberValue':
+                                return { number: node.number };
+                            case 'ProjectV2ItemFieldSingleSelectValue':
+                                return { singleSelectOptionId: node.optionId };
+                            case 'ProjectV2ItemFieldTextValue':
+                                if (node.field.dataType === 'TEXT')
+                                    return { text: node.text };
+                        }
+                    })()
+                };
             })
-                .filter((field) => Boolean(field))
+                .filter((field) => Boolean(field?.value))
         }));
-        core.info('projects:');
-        core.info(JSON.stringify(projects, null, 2));
+        for (const project of projects) {
+            const res = await graphqlClient.addIssueToProject({
+                input: { projectId: project.id, contentId: createdIssue.node_id }
+            });
+            core.info(`Added issue to project: ${project.url}`);
+            const itemId = res.addProjectV2ItemById?.item?.id;
+            if (!itemId)
+                throw new Error('Missing itemId.');
+            core.debug(`itemId: ${itemId}`);
+            for (const field of project.fields) {
+                await graphqlClient.setProjectFieldValue({
+                    input: {
+                        projectId: project.id,
+                        itemId,
+                        fieldId: field.id,
+                        value: field.value
+                    }
+                });
+                core.info(`- Set field value: ${field.name}`);
+            }
+        }
+        core.info('Successfully duplicated.');
     }
     catch (error) {
         if (error instanceof Error)
