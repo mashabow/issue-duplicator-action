@@ -99,4 +99,4 @@ __tests__/runner/*
 lib/**/*
 
 # graphql-codegen
-src/graphql.ts
+src/graphql/index.ts
