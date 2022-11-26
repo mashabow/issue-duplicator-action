@@ -53,33 +53,31 @@ async function run(): Promise<void> {
       )
       .map(({project, fieldValues}) => ({
         projectId: project.id,
-        fields:
-          fieldValues.nodes
-            ?.map(node => {
-              if (!(node && 'field' in node)) return null
-              return {
-                fieldId: node.field.id,
-                value: ((): ProjectV2FieldValue | undefined => {
-                  switch (node.__typename) {
-                    case 'ProjectV2ItemFieldDateValue':
-                      return {date: node.date}
-                    case 'ProjectV2ItemFieldIterationValue':
-                      return {iterationId: node.iterationId}
-                    case 'ProjectV2ItemFieldNumberValue':
-                      return {number: node.number}
-                    case 'ProjectV2ItemFieldSingleSelectValue':
-                      return {singleSelectOptionId: node.optionId}
-                    case 'ProjectV2ItemFieldTextValue':
-                      if (node.field.dataType === 'TEXT')
-                        return {text: node.text}
-                  }
-                })()
-              }
-            })
-            .filter(
-              (field): field is {fieldId: string; value: ProjectV2FieldValue} =>
-                Boolean(field?.value)
-            ) ?? []
+        fields: (fieldValues.nodes ?? [])
+          .map(node => {
+            if (!(node && 'field' in node)) return null
+            return {
+              fieldId: node.field.id,
+              value: ((): ProjectV2FieldValue | undefined => {
+                switch (node.__typename) {
+                  case 'ProjectV2ItemFieldDateValue':
+                    return {date: node.date}
+                  case 'ProjectV2ItemFieldIterationValue':
+                    return {iterationId: node.iterationId}
+                  case 'ProjectV2ItemFieldNumberValue':
+                    return {number: node.number}
+                  case 'ProjectV2ItemFieldSingleSelectValue':
+                    return {singleSelectOptionId: node.optionId}
+                  case 'ProjectV2ItemFieldTextValue':
+                    if (node.field.dataType === 'TEXT') return {text: node.text}
+                }
+              })()
+            }
+          })
+          .filter(
+            (field): field is {fieldId: string; value: ProjectV2FieldValue} =>
+              Boolean(field?.value)
+          )
       }))
 
     for (const {projectId, fields} of projects) {
