@@ -1,12 +1,18 @@
+# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
+
 name: Issue Duplicator
-description: Duplicate an issue
+description: Duplicate an issue with labels, assignees, milestone, and GitHub project custom fields
 author: Masaya Nakamura (@mashabow)
 
 inputs:
   github-token:
-    required: true
     description: A GitHub personal access token with write access to the repo and the project
+    required: true
 
 runs:
   using: node16
   main: dist/index.js
+
+branding:
+  color: green
+  icon: copy
