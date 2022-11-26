@@ -1,4 +1,4 @@
 dist/
 lib/
 node_modules/
-src/graphql.ts
+src/graphql/index.ts
