@@ -53,11 +53,13 @@ async function run(): Promise<void> {
       )
       .map(({project, fieldValues}) => ({
         projectId: project.id,
+        projectUrl: project.url,
         fields: (fieldValues.nodes ?? [])
           .map(node => {
             if (!(node && 'field' in node)) return null
             return {
-              fieldId: node.field.id,
+              id: node.field.id,
+              name: node.field.name,
               value: ((): ProjectV2FieldValue | undefined => {
                 switch (node.__typename) {
                   case 'ProjectV2ItemFieldDateValue':
@@ -75,25 +77,33 @@ async function run(): Promise<void> {
             }
           })
           .filter(
-            (field): field is {fieldId: string; value: ProjectV2FieldValue} =>
-              Boolean(field?.value)
+            (
+              field
+            ): field is {
+              id: string
+              name: string
+              value: ProjectV2FieldValue
+            } => Boolean(field?.value)
           )
       }))
 
-    for (const {projectId, fields} of projects) {
+    for (const {projectId, projectUrl, fields} of projects) {
       const res = await graphqlClient.addIssueToProject({
         input: {projectId, contentId: createdIssue.node_id}
       })
+      core.info(`Added issue to project: ${projectUrl}`)
       const itemId = res.addProjectV2ItemById?.item?.id
       if (!itemId) throw new Error('Missing itemId.')
-      core.info(`itemId: ${itemId}`)
+      core.debug(`itemId: ${itemId}`)
 
       for (const field of fields) {
         await graphqlClient.setProjectFieldValue({
-          input: {projectId, itemId, ...field}
+          input: {projectId, itemId, fieldId: field.id, value: field.value}
         })
+        core.info(`- Set field value: ${field.name}`)
       }
     }
+    core.info('Successfully duplicated.')
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }

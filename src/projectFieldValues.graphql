@@ -5,6 +5,7 @@ query projectFieldValues($issueNodeId: ID!) {
         nodes {
           project {
             id
+            url
           }
           fieldValues(first: 100) {
             nodes {
@@ -13,6 +14,7 @@ query projectFieldValues($issueNodeId: ID!) {
                 field {
                   ... on ProjectV2FieldCommon {
                     id
+                    name
                     dataType
                   }
                 }
