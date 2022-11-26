@@ -1,0 +1,5 @@
+mutation setProjectFieldValue($input: UpdateProjectV2ItemFieldValueInput!) {
+  updateProjectV2ItemFieldValue(input: $input) {
+    clientMutationId
+  }
+}

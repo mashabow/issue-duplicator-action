@@ -1,8 +1,8 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
+import {ProjectV2FieldValue, getSdk} from './graphql'
 // eslint-disable-next-line import/no-unresolved
 import {IssueCommentEvent} from '@octokit/webhooks-types'
-import {getSdk} from './graphql'
 
 async function run(): Promise<void> {
   try {
@@ -57,19 +57,21 @@ async function run(): Promise<void> {
           fieldValues.nodes
             ?.map(node => {
               if (!(node && 'field' in node)) return null
-              const value = (() => {
-                if ('date' in node) return node.date
-                if ('iterationId' in node) return node.iterationId
-                if ('number' in node) return node.number
-                if ('optionId' in node) return node.optionId
+              const value: ProjectV2FieldValue | undefined = (() => {
+                if ('date' in node) return {date: node.date}
+                if ('iterationId' in node)
+                  return {iterationId: node.iterationId}
+                if ('number' in node) return {number: node.number}
+                if ('optionId' in node)
+                  return {singleSelectOptionId: node.optionId}
                 if ('text' in node && node.field.dataType === 'TEXT')
-                  return node.text
+                  return {text: node.text}
               })()
               if (value === null || value === undefined) return null
               return {fieldId: node.field.id, value}
             })
             .filter(
-              (field): field is {fieldId: string; value: string | number} =>
+              (field): field is {fieldId: string; value: ProjectV2FieldValue} =>
                 Boolean(field)
             ) ?? []
       }))
@@ -81,6 +83,12 @@ async function run(): Promise<void> {
       const itemId = res.addProjectV2ItemById?.item?.id
       if (!itemId) throw new Error('Missing itemId.')
       core.info(`itemId: ${itemId}`)
+
+      for (const field of fields) {
+        await graphqlClient.setProjectFieldValue({
+          input: {projectId, itemId, ...field}
+        })
+      }
     }
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
