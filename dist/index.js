@@ -1,6 +1,115 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 5883:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ApiClient = void 0;
+const github = __importStar(__nccwpck_require__(5438));
+const graphql_1 = __nccwpck_require__(5157);
+class ApiClient {
+    constructor(token) {
+        const octokit = github.getOctokit(token);
+        this.rest = octokit.rest;
+        this.graphql = (0, graphql_1.getSdk)(octokit.graphql);
+    }
+    async duplicateIssue(originalIssue, repository) {
+        // https://docs.github.com/en/rest/issues/issues#create-an-issue
+        const { data: createdIssue } = await this.rest.issues.create({
+            owner: repository.owner.login,
+            repo: repository.name,
+            title: originalIssue.title,
+            body: originalIssue.body ?? undefined,
+            milestone: originalIssue.milestone?.number,
+            labels: originalIssue.labels,
+            assignees: originalIssue.assignees.map(({ login }) => login)
+        });
+        return createdIssue;
+    }
+    async getProjectFieldValues(issueNodeId) {
+        const data = await this.graphql.projectFieldValues({ issueNodeId });
+        if (!(data.node && 'projectItems' in data.node)) {
+            throw new Error('Missing `projectItems` for the original issue.');
+        }
+        const items = data.node.projectItems.nodes ?? [];
+        return items
+            .filter((item) => Boolean(item))
+            .map(({ project, fieldValues }) => ({
+            ...project,
+            fields: (fieldValues.nodes ?? [])
+                .map(node => {
+                if (!(node && 'field' in node))
+                    return null;
+                return {
+                    id: node.field.id,
+                    name: node.field.name,
+                    value: (() => {
+                        switch (node.__typename) {
+                            case 'ProjectV2ItemFieldDateValue':
+                                return { date: node.date };
+                            case 'ProjectV2ItemFieldIterationValue':
+                                return { iterationId: node.iterationId };
+                            case 'ProjectV2ItemFieldNumberValue':
+                                return { number: node.number };
+                            case 'ProjectV2ItemFieldSingleSelectValue':
+                                return { singleSelectOptionId: node.optionId };
+                            case 'ProjectV2ItemFieldTextValue':
+                                if (node.field.dataType === 'TEXT')
+                                    return { text: node.text };
+                        }
+                    })()
+                };
+            })
+                .filter((field) => Boolean(field?.value))
+        }));
+    }
+    async addIssueToProject(issueNodeId, projectId) {
+        const data = await this.graphql.addIssueToProject({
+            input: { projectId, contentId: issueNodeId }
+        });
+        const itemId = data.addProjectV2ItemById?.item?.id;
+        if (!itemId)
+            throw new Error('Missing itemId.');
+        return itemId;
+    }
+    async setProjectFieldValue(projectId, itemId, field) {
+        await this.graphql.setProjectFieldValue({
+            input: {
+                projectId,
+                itemId,
+                fieldId: field.id,
+                value: field.value
+            }
+        });
+    }
+}
+exports.ApiClient = ApiClient;
+
+
+/***/ }),
+
 /***/ 5157:
 /***/ ((__unused_webpack_module, exports) => {
 
@@ -2485,95 +2594,43 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
-const graphql_1 = __nccwpck_require__(5157);
+const api_client_1 = __nccwpck_require__(5883);
+function filterDuplicateCommandEvent(context) {
+    if (context.eventName !== 'issue_comment') {
+        throw new Error('This action must be used with `issue_comment` event.');
+    }
+    const event = context.payload;
+    if (event.action !== 'created') {
+        throw new Error('This action must be used with `created` activity type.');
+    }
+    return event.comment.body.trim() === '/duplicate' ? event : null;
+}
+async function duplicateIssueWithProjectFields(apiClient, event) {
+    const newIssue = await apiClient.duplicateIssue(event.issue, event.repository);
+    core.info(`Issue created: ${newIssue.url}`);
+    core.debug('newIssue:');
+    core.debug(JSON.stringify(newIssue, null, 2));
+    const projects = await apiClient.getProjectFieldValues(event.issue.node_id);
+    for (const project of projects) {
+        const itemId = await apiClient.addIssueToProject(newIssue.node_id, project.id);
+        core.info(`Added issue to project: ${project.url}`);
+        core.debug(`itemId: ${itemId}`);
+        for (const field of project.fields) {
+            await apiClient.setProjectFieldValue(project.id, itemId, field);
+            core.info(`- Set field value: ${field.name}`);
+        }
+    }
+    core.info('Successfully duplicated.');
+}
 async function run() {
     try {
         core.debug('github.context:');
         core.debug(JSON.stringify(github.context, null, 2));
-        if (github.context.eventName !== 'issue_comment') {
-            throw new Error('This action must be used with `issue_comment` event.');
-        }
-        const event = github.context.payload;
-        if (event.action !== 'created') {
-            throw new Error('This action must be used with `created` activity type.');
-        }
-        if (event.comment.body.trim() !== '/duplicate')
+        const event = filterDuplicateCommandEvent(github.context);
+        if (!event)
             return;
-        const token = core.getInput('github-token');
-        const octokit = github.getOctokit(token);
-        // https://docs.github.com/en/rest/issues/issues#create-an-issue
-        const { data: createdIssue } = await octokit.rest.issues.create({
-            owner: event.repository.owner.login,
-            repo: event.repository.name,
-            title: event.issue.title,
-            body: event.issue.body ?? undefined,
-            milestone: event.issue.milestone?.number,
-            labels: event.issue.labels,
-            assignees: event.issue.assignees.map(({ login }) => login)
-        });
-        core.info(`Issue created: ${createdIssue.url}`);
-        core.debug('createdIssue:');
-        core.debug(JSON.stringify(createdIssue, null, 2));
-        const graphqlClient = (0, graphql_1.getSdk)(octokit.graphql);
-        const data = await graphqlClient.projectFieldValues({
-            issueNodeId: event.issue.node_id
-        });
-        if (!(data.node && 'projectItems' in data.node)) {
-            throw new Error('Missing `projectItems` for the original issue.');
-        }
-        const items = data.node.projectItems.nodes ?? [];
-        const projects = items
-            .filter((item) => Boolean(item))
-            .map(({ project, fieldValues }) => ({
-            ...project,
-            fields: (fieldValues.nodes ?? [])
-                .map(node => {
-                if (!(node && 'field' in node))
-                    return null;
-                return {
-                    id: node.field.id,
-                    name: node.field.name,
-                    value: (() => {
-                        switch (node.__typename) {
-                            case 'ProjectV2ItemFieldDateValue':
-                                return { date: node.date };
-                            case 'ProjectV2ItemFieldIterationValue':
-                                return { iterationId: node.iterationId };
-                            case 'ProjectV2ItemFieldNumberValue':
-                                return { number: node.number };
-                            case 'ProjectV2ItemFieldSingleSelectValue':
-                                return { singleSelectOptionId: node.optionId };
-                            case 'ProjectV2ItemFieldTextValue':
-                                if (node.field.dataType === 'TEXT')
-                                    return { text: node.text };
-                        }
-                    })()
-                };
-            })
-                .filter((field) => Boolean(field?.value))
-        }));
-        for (const project of projects) {
-            const res = await graphqlClient.addIssueToProject({
-                input: { projectId: project.id, contentId: createdIssue.node_id }
-            });
-            core.info(`Added issue to project: ${project.url}`);
-            const itemId = res.addProjectV2ItemById?.item?.id;
-            if (!itemId)
-                throw new Error('Missing itemId.');
-            core.debug(`itemId: ${itemId}`);
-            for (const field of project.fields) {
-                await graphqlClient.setProjectFieldValue({
-                    input: {
-                        projectId: project.id,
-                        itemId,
-                        fieldId: field.id,
-                        value: field.value
-                    }
-                });
-                core.info(`- Set field value: ${field.name}`);
-            }
-        }
-        core.info('Successfully duplicated.');
+        const apiClient = new api_client_1.ApiClient(core.getInput('github-token'));
+        duplicateIssueWithProjectFields(apiClient, event);
     }
     catch (error) {
         if (error instanceof Error)
