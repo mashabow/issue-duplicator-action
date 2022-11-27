@@ -2,8 +2,7 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import {ApiClient} from './api-client'
 import {Context} from '@actions/github/lib/context'
-// eslint-disable-next-line import/no-unresolved
-import {IssueCommentEvent} from '@octokit/webhooks-types'
+import type {IssueCommentEvent} from '@octokit/webhooks-types'
 
 function filterDuplicateCommandEvent(
   context: Context
@@ -24,6 +23,7 @@ async function duplicateIssueWithProjectFields(
   apiClient: ApiClient,
   event: IssueCommentEvent
 ): Promise<void> {
+  core.info(`Original issue: ${event.issue.html_url}`)
   const newIssue = await apiClient.duplicateIssue(event.issue, event.repository)
   core.info(`Issue created: ${newIssue.url}`)
   core.debug('newIssue:')
@@ -31,10 +31,7 @@ async function duplicateIssueWithProjectFields(
 
   const projects = await apiClient.getProjectFieldValues(event.issue.node_id)
   for (const project of projects) {
-    const itemId = await apiClient.addIssueToProject(
-      newIssue.node_id,
-      project.id
-    )
+    const itemId = await apiClient.addIssueToProject(newIssue.id, project.id)
     core.info(`Added issue to project: ${project.url}`)
     core.debug(`itemId: ${itemId}`)
 
