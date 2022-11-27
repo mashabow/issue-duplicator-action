@@ -30,10 +30,7 @@ async function duplicateIssueWithProjectFields(
 
   const projects = await apiClient.getProjectFieldValues(event.issue.node_id)
   for (const project of projects) {
-    const itemId = await apiClient.addIssueToProject(
-      newIssue.node_id,
-      project.id
-    )
+    const itemId = await apiClient.addIssueToProject(newIssue.id, project.id)
     core.info(`Added issue to project: ${project.url}`)
     core.debug(`itemId: ${itemId}`)
 

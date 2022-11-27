@@ -1,5 +1,5 @@
-query projectFieldValues($issueNodeId: ID!) {
-  node(id: $issueNodeId) {
+query projectFieldValues($issueId: ID!) {
+  node(id: $issueId) {
     ... on Issue {
       projectItems(first: 10, includeArchived: false) {
         nodes {

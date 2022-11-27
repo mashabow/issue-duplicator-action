@@ -28,7 +28,7 @@ export class ApiClient {
     originalIssue: Issue,
     repository: Repository
   ): Promise<{
-    readonly node_id: string
+    readonly id: string
     readonly url: string
   }> {
     // https://docs.github.com/en/rest/issues/issues#create-an-issue
@@ -41,13 +41,11 @@ export class ApiClient {
       labels: originalIssue.labels,
       assignees: originalIssue.assignees.map(({login}) => login)
     })
-    return {node_id: createdIssue.node_id, url: createdIssue.html_url}
+    return {id: createdIssue.node_id, url: createdIssue.html_url}
   }
 
-  async getProjectFieldValues(
-    issueNodeId: string
-  ): Promise<readonly Project[]> {
-    const data = await this.graphql.projectFieldValues({issueNodeId})
+  async getProjectFieldValues(issueId: string): Promise<readonly Project[]> {
+    const data = await this.graphql.projectFieldValues({issueId})
     if (!(data.node && 'projectItems' in data.node)) {
       throw new Error('Missing `projectItems` for the original issue.')
     }
@@ -85,12 +83,9 @@ export class ApiClient {
       }))
   }
 
-  async addIssueToProject(
-    issueNodeId: string,
-    projectId: string
-  ): Promise<string> {
+  async addIssueToProject(issueId: string, projectId: string): Promise<string> {
     const data = await this.graphql.addIssueToProject({
-      input: {projectId, contentId: issueNodeId}
+      input: {projectId, contentId: issueId}
     })
     const itemId = data.addProjectV2ItemById?.item?.id
     if (!itemId) throw new Error('Missing itemId.')
