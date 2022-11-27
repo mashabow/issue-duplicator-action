@@ -43,8 +43,6 @@ jobs:
 
 ## Development
 
-_This action is created from [actions/typescript-action](https://github.com/actions/typescript-action) template._
-
 ### Manual testing
 
 For manual testing against your development branch, you can use this workflow in another repository:
@@ -72,3 +70,11 @@ jobs:
         with:
           github-token: ${{ secrets.REPO_PROJECT_PAT }}
 ```
+
+### Publish
+
+To publish a new version of this action, create a release on GitHub. Then the following stuff are automatically done with [JasonEtco/build-and-tag-action](https://github.com/JasonEtco/build-and-tag-action).
+
+1. Build this action.
+2. Commit `actions.yml` and the built file.
+3. Push the commit with version tags.
