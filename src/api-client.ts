@@ -106,4 +106,8 @@ export class ApiClient {
       }
     })
   }
+
+  async updateIssueComment(commentId: string, body: string): Promise<void> {
+    await this.graphql.updateIssueComment({input: {id: commentId, body}})
+  }
 }
