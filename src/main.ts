@@ -4,6 +4,8 @@ import {ApiClient} from './api-client'
 import {Context} from '@actions/github/lib/context'
 import type {IssueCommentEvent} from '@octokit/webhooks-types'
 
+const COMMAND = '/duplicate'
+
 function filterDuplicateCommandEvent(
   context: Context
 ): IssueCommentEvent | null {
@@ -16,7 +18,7 @@ function filterDuplicateCommandEvent(
     throw new Error('This action must be used with `created` activity type.')
   }
 
-  return event.comment.body.trim() === '/duplicate' ? event : null
+  return event.comment.body.trim() === COMMAND ? event : null
 }
 
 async function duplicateIssueWithProjectFields(
@@ -40,6 +42,11 @@ async function duplicateIssueWithProjectFields(
       core.info(`- Set field value: ${field.name}`)
     }
   }
+
+  await apiClient.updateIssueComment(
+    event.comment.node_id,
+    `${COMMAND} 👉 ${newIssue.url}`
+  )
   core.info('Successfully duplicated.')
 }
 
