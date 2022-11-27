@@ -95,8 +95,7 @@ typings/
 Thumbs.db
 
 # Ignore built ts files
-__tests__/runner/*
-lib/**/*
+dist/
 
 # graphql-codegen
 src/graphql/index.ts
