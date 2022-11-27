@@ -1,5 +1,5 @@
 import * as github from '@actions/github'
-import {Issue, Repository} from '@octokit/webhooks-types'
+import type {Issue, Repository} from '@octokit/webhooks-types'
 import {ProjectV2FieldValue, Sdk, getSdk} from './graphql'
 
 type Field = {

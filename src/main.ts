@@ -2,8 +2,7 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import {ApiClient} from './api-client'
 import {Context} from '@actions/github/lib/context'
-// eslint-disable-next-line import/no-unresolved
-import {IssueCommentEvent} from '@octokit/webhooks-types'
+import type {IssueCommentEvent} from '@octokit/webhooks-types'
 
 function filterDuplicateCommandEvent(
   context: Context
