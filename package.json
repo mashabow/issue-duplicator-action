@@ -4,15 +4,14 @@
   "author": "Masaya Nakamura",
   "private": true,
   "license": "MIT",
-  "main": "lib/main.js",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "npm run codegen && tsc",
+    "build": "npm run codegen && ncc build src/main.ts --source-map --license licenses.txt",
     "format": "prettier --write '**/*.ts'",
     "format-check": "prettier --check '**/*.ts'",
     "lint": "eslint src/**/*.ts",
-    "package": "ncc build --source-map --license licenses.txt",
     "test": "echo 'TODO'",
-    "all": "npm run build && npm run format && npm run lint && npm run package && npm test",
+    "all": "npm run build && npm run format && npm run lint && npm test",
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {

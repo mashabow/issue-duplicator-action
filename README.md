@@ -47,17 +47,17 @@ _This action is created from [actions/typescript-action](https://github.com/acti
 
 ### Packaging
 
-The GitHub Action runners can only run pure JavaScript. So you have to package to `dist/` directory and commit it before merging into the `main` branch.
+The GitHub Action runners can only run pure JavaScript. So you have to build to `dist/` directory and commit it before merging into the `main` branch.
 
 ```console
-$ npm run build && npm run package
+$ npm run build
 $ git add dist/
 $ git commit -m 'packaging'
 ```
 
 ### Manual testing
 
-For manual testing against your development branch, without committing the packaged `dist/` directory, you can use this workflow in another repository:
+For manual testing against your development branch, without committing the `dist/` directory, you can use this workflow in another repository:
 
 ```yml
 name: Issue Duplicator (dev)
@@ -78,8 +78,6 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      - name: Package
-        run: npm run package
       - uses: ./
         with:
           github-token: ${{ secrets.REPO_PROJECT_PAT }}
