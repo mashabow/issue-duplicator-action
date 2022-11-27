@@ -23,6 +23,7 @@ async function duplicateIssueWithProjectFields(
   apiClient: ApiClient,
   event: IssueCommentEvent
 ): Promise<void> {
+  core.info(`Original issue: ${event.issue.html_url}`)
   const newIssue = await apiClient.duplicateIssue(event.issue, event.repository)
   core.info(`Issue created: ${newIssue.url}`)
   core.debug('newIssue:')
