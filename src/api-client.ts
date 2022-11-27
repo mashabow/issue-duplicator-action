@@ -41,7 +41,7 @@ export class ApiClient {
       labels: originalIssue.labels,
       assignees: originalIssue.assignees.map(({login}) => login)
     })
-    return createdIssue
+    return {node_id: createdIssue.node_id, url: createdIssue.html_url}
   }
 
   async getProjectFieldValues(
