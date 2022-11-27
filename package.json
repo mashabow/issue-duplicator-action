@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
-    "build": "npm run codegen && ncc build src/main.ts --source-map --license licenses.txt",
+    "build": "npm run codegen && ncc build src/main.ts --license licenses.txt",
     "format": "prettier --write '**/*.ts'",
     "format-check": "prettier --check '**/*.ts'",
     "lint": "eslint src/**/*.ts",
