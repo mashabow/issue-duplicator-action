@@ -45,19 +45,9 @@ jobs:
 
 _This action is created from [actions/typescript-action](https://github.com/actions/typescript-action) template._
 
-### Packaging
-
-The GitHub Action runners can only run pure JavaScript. So you have to build to `dist/` directory and commit it before merging into the `main` branch.
-
-```console
-$ npm run build
-$ git add dist/
-$ git commit -m 'packaging'
-```
-
 ### Manual testing
 
-For manual testing against your development branch, without committing the `dist/` directory, you can use this workflow in another repository:
+For manual testing against your development branch, you can use this workflow in another repository:
 
 ```yml
 name: Issue Duplicator (dev)
