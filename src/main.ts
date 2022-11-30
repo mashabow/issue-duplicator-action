@@ -14,8 +14,10 @@ function filterDuplicateCommandEvent(
   }
 
   const event = context.payload as IssueCommentEvent
-  if (event.action !== 'created') {
-    throw new Error('This action must be used with `created` activity type.')
+  if (!['created', 'edited'].includes(event.action)) {
+    throw new Error(
+      'This action must be used with `created` or `edited` activity type.'
+    )
   }
 
   return event.comment.body.trim() === COMMAND ? event : null

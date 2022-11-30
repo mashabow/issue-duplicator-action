@@ -25,7 +25,7 @@ name: Issue Duplicator
 
 on:
   issue_comment:
-    types: [created]
+    types: [created, edited]
 
 jobs:
   run:
@@ -52,7 +52,7 @@ name: Issue Duplicator (dev)
 
 on:
   issue_comment:
-    types: [created]
+    types: [created, edited]
 
 jobs:
   run:
