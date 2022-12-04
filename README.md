@@ -16,6 +16,10 @@ Note that the following properties are _not_ copied from the original issue:
 - State (open or closed)
 - Locked or not
 
+For details, please read this blog post (in Japanese):
+
+- [GitHub の issue をまるっと複製する GitHub Action「Issue Duplicator」を自作した - Feedforce Developer Blog](https://developer.feedforce.jp/entry/2022/12/04/235514)
+
 ## Usage
 
 Add `.github/workflows/issue-duplicator.yml` to your repository:
@@ -33,7 +37,7 @@ jobs:
     steps:
       - uses: mashabow/issue-duplicator-action@v1
         with:
-          github-token: ${{ secrets.REPO_PROJECT_PAT }}
+          github-token: ${{ secrets.ISSUE_DUPLICATOR_PAT }}
 ```
 
 ### Input
@@ -68,7 +72,7 @@ jobs:
         run: npm run build
       - uses: ./
         with:
-          github-token: ${{ secrets.REPO_PROJECT_PAT }}
+          github-token: ${{ secrets.ISSUE_DUPLICATOR_PAT }}
 ```
 
 ### Publish
@@ -76,5 +80,5 @@ jobs:
 To publish a new version of this action, create a release on GitHub. Then the following stuff are automatically done with [JasonEtco/build-and-tag-action](https://github.com/JasonEtco/build-and-tag-action).
 
 1. Build this action.
-2. Commit `actions.yml` and the built file.
+2. Commit `action.yml` and the built file.
 3. Push the commit with version tags.
